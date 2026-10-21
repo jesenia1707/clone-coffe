@@ -4,6 +4,6 @@ export const cognitoAuthConfig = {
   client_id: "241nr5msig5v7b1vsrc8ckrkc3",
   redirect_uri: `${window.location.origin}/`,
   response_type: "code",
-  scope: "openid email profile",
+  scope: "email openid phone",
   post_logout_redirect_uri: `${window.location.origin}/`,
 };
