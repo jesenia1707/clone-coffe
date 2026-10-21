@@ -1,13 +1,9 @@
-
 function Home() {
   return (
     <main className="home">
-      {/* HERO */}
       <section className="hero">
         <div className="hero-content">
-          <p className="hero-subtitle">
-            ☕ Bienvenido a Coffee Flower 🌸
-          </p>
+          <p className="hero-subtitle">☕ Bienvenido a Coffee Flower 🌸</p>
 
           <h1>
             El sabor que
@@ -32,49 +28,46 @@ function Home() {
         </div>
 
         <div className="hero-image">
-          <div className="coffee-circle">☕</div>
+          <div className="coffee-circle">
+            ☕
+          </div>
           <div className="flower flower-one">🌸</div>
           <div className="flower flower-two">🌷</div>
         </div>
       </section>
 
-      {/* PRODUCTOS DESTACADOS */}
       <section className="featured">
         <p className="section-subtitle">Nuestros favoritos</p>
 
         <h2>Productos destacados</h2>
 
         <div className="featured-grid">
-          {/* CAFÉS */}
           <div className="featured-card">
             <div className="card-icon">☕</div>
-
             <h3>Cafés</h3>
-
             <p>
-              Cafés preparados con granos seleccionados
-              para disfrutar cada momento.
+              Cafés preparados con granos seleccionados para disfrutar
+              cada momento.
             </p>
-
-            <a href="/products?categoria=Caf%C3%A9s">
-              Ver cafés →
-            </a>
+            <a href="/products">Ver productos →</a>
           </div>
 
-          {/* PASTELERÍA */}
           <div className="featured-card">
             <div className="card-icon">🍰</div>
-
             <h3>Pastelería</h3>
-
             <p>
-              Deliciosos acompañamientos para disfrutar
-              junto a tu café.
+              Deliciosos acompañamientos para disfrutar junto a tu café.
             </p>
+            <a href="/products">Ver productos →</a>
+          </div>
 
-            <a href="/products?categoria=Pasteler%C3%ADa">
-              Ver pastelería →
-            </a>
+          <div className="featured-card">
+            <div className="card-icon">🌸</div>
+            <h3>Especiales</h3>
+            <p>
+              Productos especiales pensados para regalar o disfrutar.
+            </p>
+            <a href="/products">Ver productos →</a>
           </div>
         </div>
       </section>
