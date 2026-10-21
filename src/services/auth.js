@@ -1,15 +1,9 @@
 
 export const cognitoAuthConfig = {
-  authority:
-    "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_FW8m072ZH",
-
-  client_id: "51k7vee96g6rc6bfiq3f2q9ocr",
-
-  redirect_uri: `${window.location.origin}/`,
-
+  authority: "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_FW8m072ZH",
+  client_id: "241nr5msig5v7b1vsrc8ckrkc3",
+  redirect_uri: "http://localhost:5173/",
   response_type: "code",
-
-  scope: "openid email profile",
-
-  post_logout_redirect_uri: `${window.location.origin}/`,
+  scope: "email openid phone",
+  // set localStorage
 };
