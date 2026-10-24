@@ -1,27 +1,56 @@
+
 import { useEffect, useState } from "react";
+import { useAuth } from "react-oidc-context";
 import { obtenerProductos } from "../services/api";
 
 function Products() {
+  const auth = useAuth();
+
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
+    if (auth.isLoading) return;
+
+    let activo = true;
+
     const cargarProductos = async () => {
       try {
-        const datos = await obtenerProductos();
-        setProductos(datos);
+        setCargando(true);
+        setError("");
+
+        if (!auth.isAuthenticated || !auth.user) {
+          throw new Error(
+            "Debes iniciar sesión para consultar los productos."
+          );
+        }
+
+        const datos = await obtenerProductos(auth.user);
+
+        if (activo) {
+          setProductos(Array.isArray(datos) ? datos : []);
+        }
       } catch (error) {
-        console.error(error);
-        setError("No se pudieron cargar los productos.");
+        console.error("Error cargando productos:", error);
+
+        if (activo) {
+          setError("No se pudieron cargar los productos.");
+        }
       } finally {
-        setCargando(false);
+        if (activo) {
+          setCargando(false);
+        }
       }
     };
 
     cargarProductos();
-  }, []);
+
+    return () => {
+      activo = false;
+    };
+  }, [auth.isLoading, auth.isAuthenticated, auth.user]);
 
   const agregarAlCarrito = (producto) => {
     const carritoActual = JSON.parse(
@@ -40,6 +69,11 @@ function Products() {
         return;
       }
     } else {
+      if (producto.stock <= 0) {
+        setMensaje("Este producto no tiene stock disponible.");
+        return;
+      }
+
       carritoActual.push({
         ...producto,
         cantidad: 1,
@@ -55,7 +89,7 @@ function Products() {
     }, 2000);
   };
 
-  if (cargando) {
+  if (auth.isLoading || cargando) {
     return (
       <main className="products-page">
         <div className="loading-box">
@@ -81,7 +115,6 @@ function Products() {
 
   return (
     <main className="products-page">
-
       <section className="products-header">
         <p className="section-subtitle">☕ Coffee Flower 🌸</p>
 
@@ -107,16 +140,13 @@ function Products() {
         </div>
       ) : (
         <section className="products-grid">
-
           {productos.map((producto) => (
             <article className="product-card" key={producto.id}>
-
               <div className="product-image">
                 ☕
               </div>
 
               <div className="product-content">
-
                 <span className="product-category">
                   Coffee Flower
                 </span>
@@ -128,7 +158,6 @@ function Products() {
                 </p>
 
                 <div className="product-info">
-
                   <strong>
                     ${Number(producto.precio).toLocaleString("es-CL")}
                   </strong>
@@ -136,7 +165,6 @@ function Products() {
                   <span>
                     Stock: {producto.stock}
                   </span>
-
                 </div>
 
                 <button
@@ -148,15 +176,11 @@ function Products() {
                     ? "Sin stock"
                     : "Agregar al carrito 🛒"}
                 </button>
-
               </div>
-
             </article>
           ))}
-
         </section>
       )}
-
     </main>
   );
 }

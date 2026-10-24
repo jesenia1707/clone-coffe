@@ -1,25 +1,18 @@
 
-import { fetchAuthSession } from "aws-amplify/auth";
-
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const obtenerProductos = async () => {
+export const obtenerProductos = async (user) => {
   if (!API_URL) {
     throw new Error(
       "Falta configurar VITE_API_URL en las variables de entorno."
     );
   }
 
-  const sesion = await fetchAuthSession();
-
-  // Usar el token de acceso o el ID token disponible
-  const token =
-    sesion.tokens?.accessToken?.toString() ||
-    sesion.tokens?.idToken?.toString();
+  const token = user?.id_token;
 
   if (!token) {
     throw new Error(
-      "Cognito no entregó un token disponible para consultar productos."
+      "No se encontró el ID token de la sesión OIDC."
     );
   }
 
