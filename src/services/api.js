@@ -11,10 +11,16 @@ export const obtenerProductos = async () => {
   }
 
   const sesion = await fetchAuthSession();
-  const token = sesion.tokens?.idToken?.toString();
+
+  // Usar el token de acceso o el ID token disponible
+  const token =
+    sesion.tokens?.accessToken?.toString() ||
+    sesion.tokens?.idToken?.toString();
 
   if (!token) {
-    throw new Error("No se encontró el token de Cognito.");
+    throw new Error(
+      "Cognito no entregó un token disponible para consultar productos."
+    );
   }
 
   const respuesta = await fetch(
